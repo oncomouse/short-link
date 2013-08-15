@@ -1,0 +1,19 @@
+- error = @link.errors.key?(:url_key) && @link.errors[:url_key].count > 0
+%fieldset.control-group{:class => error ? 'has-error' : ''}
+  =f.label :url_key, :class => 'control-label'
+  .controls
+    =f.text_field :url_key, :class => 'input-xlarge input-with-feedback', :autofocus => true
+    %span.help-inline=error ? f.error_message_on(:url_key, :class => 'text-error') : pat('No whitespace characters allowed.')
+- error = @link.errors.key?(:url) && @link.errors[:url].count > 0
+%fieldset.control-group{:class => error ? 'has-error' : ''}
+  =f.label :url, :class => 'control-label'
+  .controls
+    =f.text_field :url, :class => 'input-xlarge input-with-feedback'
+    %span.help-inline=error ? f.error_message_on(:url, :class => 'text-error') : pat('Ex: http://foobar.com/baz')
+
+.form-actions
+  =f.submit pat(:save), :class => 'btn btn-primary'
+  &nbsp;
+  =f.submit pat(:save_and_continue), :class => 'btn btn-info', :name => 'save_and_continue'
+  &nbsp;
+  =link_to pat(:cancel), url(:links, :index), :class => 'btn'
