@@ -1,3 +1,5 @@
+require "#{Dir.pwd}/lib/base62.rb"
+
 module ShortLinks
   class Admin < Padrino::Application
     register Padrino::Rendering
@@ -33,6 +35,7 @@ module ShortLinks
     end
 
     access_control.roles_for :admin do |role|
+    role.project_module :shorties, '/shorties'
     role.project_module :links, '/links'
     role.project_module :accounts, '/accounts'
     end

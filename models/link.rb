@@ -7,6 +7,8 @@ class Link
 	def valid_url_key?
 		if @url_key =~ /^admin/
 			return [false, "URL Key Cannot Begin With \"admin\""]
+		elsif @url_key =~ /^s\// or @url_key == "s"
+			return [false, "This URL is already a shortened key."]
 		elsif @url_key =~ /^\S+$/
 			return true
 		else

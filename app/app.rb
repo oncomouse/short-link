@@ -1,3 +1,5 @@
+require "#{Dir.pwd}/lib/base62.rb"
+
 module ShortLinks
   class App < Padrino::Application
     register SassInitializer
@@ -11,6 +13,19 @@ module ShortLinks
     enable :sessions
 
 	@@default_url = "http://andrew.pilsch.com"
+	
+	
+	get '/s/' do
+	end
+	
+	get :shorty, :map => '/s/:url_key' do
+		shorty = Shorty.get(Base62.to_i params[:url_key])
+		if shorty.nil?
+			halt(404)
+		else
+			redirect shorty.url
+		end
+	end
 	
 	get :link, :map => '/:url_key' do
 		# Rudimentary cache support:
