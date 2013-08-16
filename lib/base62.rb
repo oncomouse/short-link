@@ -32,7 +32,7 @@ class Base62
 			@@ranges.each_index do |j|
 				range = @@ranges[j]
 				if range.member? c
-					number += (c[0] - range.to_a.first[0] + @@offsets[j]) * (@@base ** i)
+					number += (c.ord - range.to_a.first.ord + @@offsets[j]) * (@@base ** i)
 					break
 				end
 			end

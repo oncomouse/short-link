@@ -1,5 +1,3 @@
-require "#{Dir.pwd}/lib/base62.rb"
-
 module ShortLinks
   class App < Padrino::Application
     register SassInitializer
