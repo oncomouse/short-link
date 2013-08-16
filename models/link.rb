@@ -21,7 +21,7 @@ class Link
 	
 	# Add in cache support:
 	after :save, :update do |link|
-		if File.writeable? "#{Dir.pwd}/public/"
+		if File.writable? "#{Dir.pwd}/public/"
 			File.open("#{Dir.pwd}/public/_#{link.url_key}.html", "w") { |f| f.write("<html><head><meta http-equiv=\"refresh\" content=\"0; url=#{link.url}\"><script type=\"text/javascript\">window.location.href=\"#{link.url}\";</script></head><body></body></html>")}
 		end
 	end
