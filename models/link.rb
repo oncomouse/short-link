@@ -17,4 +17,18 @@ class Link
 	property :id, Serial
 	property :url_key, String
 	property :url, String
+	
+	
+	# Add in cache support:
+	after :save, :update do |link|
+		if File.writeable? "#{Dir.pwd}/public/"
+			File.open("#{Dir.pwd}/public/_#{link.url_key}.html", "w") { |f| f.write("<html><head><meta http-equiv=\"refresh\" content=\"0; url=#{link.url}\"><script type=\"text/javascript\">window.location.href=\"#{link.url}\";</script></head><body></body></html>")}
+		end
+	end
+	
+	before :destroy do |link|
+		if File.exists? "#{Dir.pwd}/public/_#{link.url_key}.html"
+			File.unlink "#{Dir.pwd}/public/_#{link.url_key}.html"
+		end
+	end
 end

@@ -8,3 +8,4 @@ vendor/gems/*
 db/*.db
 .*.sw*
 Gemfile.lock
+public/_*.html

@@ -5,18 +5,28 @@ module ShortLinks
     register Padrino::Mailer
     register Padrino::Helpers
 
+    #register Padrino::Cache
+    #enable :caching
+
     enable :sessions
 
 	@@default_url = "http://andrew.pilsch.com"
 	
 	get :link, :map => '/:url_key' do
-		link = Link.first(:url_key => params[:url_key])
-		if link.nil?
-			redirect "#{@@default_url}/#{params[:url_key]}"
+		# Rudimentary cache support:
+		# Files are now created when a link is created and updated. These pages are rudimentary HTML redirects.
+		# This saves having to ping the database for every page request (as the data doesn't change often).
+		if File.exists? "#{Dir.pwd}/public/_#{params[:url_key]}.html"
+			File.read("#{Dir.pwd}/public/_#{params[:url_key]}.html")
 		else
-			redirect link.url
-		end
-			
+			link = Link.first(:url_key => params[:url_key])
+			if link.nil?
+				redirect "#{@@default_url}/#{params[:url_key]}"
+			else
+		
+				redirect link.url
+			end
+		end	
 	end
 	
 	get '/' do
@@ -26,8 +36,7 @@ module ShortLinks
     ##
     # Caching support
     #
-    # register Padrino::Cache
-    # enable :caching
+
     #
     # You can customize caching store engines:
     #
