@@ -1,0 +1,5 @@
+PassengerEnabled on
+PassengerAppRoot /home/eschaton/apps/short-link
+
+RewriteCond %{REQUEST_FILENAME}/index.html -
+RewriteRule ^(.*)$ $1/index.html [QSA,L]
