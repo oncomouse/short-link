@@ -29,8 +29,8 @@ module ShortLinks
 		# Rudimentary cache support:
 		# Files are now created when a link is created and updated. These pages are rudimentary HTML redirects.
 		# This saves having to ping the database for every page request (as the data doesn't change often).
-		if File.exists? "#{Dir.pwd}/public/_#{params[:url_key]}.html"
-			File.read("#{Dir.pwd}/public/_#{params[:url_key]}.html")
+		if File.exists? "#{Padrino.root}/public/#{params[:url_key]}/index.html"
+			File.read("#{Padrino.root}/public/#{params[:url_key]}/index.html")
 		else
 			link = Link.first(:url_key => params[:url_key])
 			if link.nil?

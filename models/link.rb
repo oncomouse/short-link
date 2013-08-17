@@ -23,14 +23,18 @@ class Link
 	
 	# Add in cache support:
 	after :save, :update do |link|
-		if File.writable? "#{Dir.pwd}/public/"
-			File.open("#{Dir.pwd}/public/_#{link.url_key}.html", "w") { |f| f.write("<html><head><meta http-equiv=\"refresh\" content=\"0; url=#{link.url}\"><script type=\"text/javascript\">window.location.href=\"#{link.url}\";</script></head><body></body></html>")}
+		if File.writable? "#{Padrino.root}/public/"
+			if !File.exist? "#{Padrino.root}/public/#{link.url_key}"
+				Dir.mkdir "#{Padrino.root}/public/"
+			end
+			File.open("#{Padrino.root}/public/#{link.url_key}/index.html", "w") { |f| f.write("<html><head><meta http-equiv=\"refresh\" content=\"0; url=#{link.url}\"><script type=\"text/javascript\">window.location.href=\"#{link.url}\";</script></head><body></body></html>")}
 		end
 	end
 	
 	before :destroy do |link|
-		if File.exists? "#{Dir.pwd}/public/_#{link.url_key}.html"
-			File.unlink "#{Dir.pwd}/public/_#{link.url_key}.html"
+		if File.exists? "#{Padrino.root}/public/#{link.url_key}/index.html" #"#{Padrino.root}/public/#{link.url_key}/index.html
+			File.unlink "#{Padrino.root}/public/#{link.url_key}/index.html" #"#{Padrino.root}/public/#{link.url_key}/index.html
+			File.unlink "#{Padrino.root}/public/#{link.url_key}/"
 		end
 	end
 end
