@@ -20,6 +20,16 @@ class Link
 	property :url_key, String
 	property :url, String
 	
+	before :update do |link|
+		old_link = Link.get(link.id)
+		
+		if old_link.url_key != link.url_key
+			if File.exists? "#{Padrino.root}/public/#{old_link.url_key}/index.html"
+				File.unlink "#{Padrino.root}/public/#{old_link.url_key}/index.html"
+				Dir.rmdir "#{Padrino.root}/public/#{old_link.url_key}"				
+			end
+		end
+	end
 	
 	# Add in cache support:
 	after :save, :update do |link|
@@ -32,9 +42,9 @@ class Link
 	end
 	
 	before :destroy do |link|
-		if File.exists? "#{Padrino.root}/public/#{link.url_key}/index.html" #"#{Padrino.root}/public/#{link.url_key}/index.html
-			File.unlink "#{Padrino.root}/public/#{link.url_key}/index.html" #"#{Padrino.root}/public/#{link.url_key}/index.html
-			File.unlink "#{Padrino.root}/public/#{link.url_key}/"
+		if File.exists? "#{Padrino.root}/public/#{link.url_key}/index.html"
+			File.unlink "#{Padrino.root}/public/#{link.url_key}/index.html"
+			Dir.rmdir "#{Padrino.root}/public/#{link.url_key}"
 		end
 	end
 end
