@@ -25,7 +25,7 @@ class Link
 	after :save, :update do |link|
 		if File.writable? "#{Padrino.root}/public/"
 			if !File.exist? "#{Padrino.root}/public/#{link.url_key}"
-				Dir.mkdir "#{Padrino.root}/public/"
+				Dir.mkdir "#{Padrino.root}/public/#{link.url_key}"
 			end
 			File.open("#{Padrino.root}/public/#{link.url_key}/index.html", "w") { |f| f.write("<html><head><meta http-equiv=\"refresh\" content=\"0; url=#{link.url}\"><script type=\"text/javascript\">window.location.href=\"#{link.url}\";</script></head><body></body></html>")}
 		end
